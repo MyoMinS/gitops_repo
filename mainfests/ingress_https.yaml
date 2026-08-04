@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: app
+  annotations:
+    alb.ingress.kubernetes.io/group.name: shared-backend-alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # ACM Certificate & SSL Settings
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:484907514740:certificate/a328fbf9-2412-4ff7-b5f1-d47355a029a9
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  ingressClassName: alb
+  rules:
+    - host: app.myomins.website
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 80

@@ -1,0 +1,10 @@
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+ name: my-tgb
+ namespace: app
+spec:
+ serviceRef:
+   name: backend-service
+   port: 80
+ targetGroupARN: arn:aws:elasticloadbalancing:ap-southeast-1:484907514740:targetgroup/nginx-tg/33b2d96718aaffd7

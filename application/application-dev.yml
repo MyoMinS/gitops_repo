@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vote-dev
+  namespace: argocd
+spec:
+  project: dev
+
+  source:
+    repoURL: https://github.com/MyoMinS/argo-labs-example.git
+    targetRevision: main
+    path: dev
+
+  destination:
+    name: in-cluster
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

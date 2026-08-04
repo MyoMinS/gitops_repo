@@ -1,0 +1,98 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eks-cluster-01
+  region: ap-southeast-1
+  version: "1.35"
+
+vpc:
+  id: "vpc-0832ec3aea47024b2"
+  subnets:
+    public:
+      apsoutheast1a:
+        id: subnet-0f540c350c544c129
+      apsoutheast1b:
+        id: subnet-064e120d9f13304d2
+    private:
+      private-one:
+          id: "subnet-06df4d4e073a57b72"
+      private-two:
+          id: "subnet-04222b2719f2099ac"
+
+autoModeConfig:
+    enabled: false
+
+#fargateProfiles:
+#  - name: fp-default
+#    selectors:
+#      - namespace: default
+#      - namespace: kube-system
+#      - namespace: argocd
+#    subnets:
+#    - subnet-06df4d4e073a57b72
+#    - subnet-04222b2719f2099ac
+
+managedNodeGroups:
+  #- name: ng-1-workers
+  #  labels: { role: workers }
+  #  instanceType: t3.medium
+  #  desiredCapacity: 1
+  #  minSize: 1
+  #  maxSize: 4
+  #  maxPodsPerNode: 17
+  #  privateNetworking: true
+  # # subnets:
+  # #   - private-one
+  #  ssh:
+  #    allow: true
+  #    publicKeyName: eks-spore
+  #  tags:
+  #    k8s.io/cluster-autoscaler/enabled: "true"
+  #    k8s.io/cluster-autoscaler/eks-cluster-01: "owned"
+  #  updateConfig:
+  #    maxUnavailable: 1
+  - name: spot
+    instanceTypes: ["c3.large","c4.large","c5.large","c5d.large","c5n.large","c5a.large"]
+    spot: true
+    #privateNetworking: true
+    labels: { role: spot }
+    volumeSize: 20
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 4
+    maxPodsPerNode: 17
+    #subnets:
+    #  - subnet-06df4d4e073a57b72
+    #  - subnet-04222b2719f2099ac
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/eks-cluster-01: "owned"
+    updateConfig:
+      maxUnavailable: 1
+
+iam:
+  withOIDC: true
+  serviceRoleARN: arn:aws:iam::484907514740:role/EKSClusterServiceRole
+
+
+#cloudWatch:
+#  clusterLogging:
+#    enableTypes: ["audit", "authenticator"]
+#    logRetentionInDays: 7
+
+capabilities:
+  - name: eks-cluster-01-argocd
+    type: ARGOCD
+    roleArn: arn:aws:iam::484907514740:role/AmazonEKSCapabilityArgoCDRole
+    deletePropagationPolicy: RETAIN
+    configuration:
+      argocd:
+        awsIdc:
+          idcInstanceArn: arn:aws:sso:::instance/ssoins-8210833e57d6211f
+          idcRegion: ap-southeast-1
+        rbacRoleMappings:
+          - role: ADMIN
+            identities:
+              - id: c91af59c-c021-7059-df21-47e6bb9daf2c
+                type: SSO_USER
