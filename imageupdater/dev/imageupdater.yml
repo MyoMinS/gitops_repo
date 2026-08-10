@@ -1,13 +1,17 @@
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: my-updater
+  name: vote
   namespace: argocd
 spec:
   applicationRefs:
     - namePattern: "vote-*"
       images:
-        - alias: "vote"
+        - alias: "vote-dev"
+          imageName: "484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote:dev"
+          commonUpdateSettings:
+            updateStrategy: "digest"
+        - alias: "vote-prod"
           imageName: "484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote:prod"
           commonUpdateSettings:
             updateStrategy: "digest"

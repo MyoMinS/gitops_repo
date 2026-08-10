@@ -6,7 +6,7 @@ resources:
 #- targetgroupbinding.yaml
 
 replicas:
-- count: 3
+- count: 1
   name: vote
 namespace: prod
 

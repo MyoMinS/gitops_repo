@@ -28,6 +28,7 @@ eksctl delete cluster -f .\cluster.yaml
 
 eksctl upgrade cluster --config-file cluster.yaml 
 
+eksctl scale nodegroup --cluster=eks-cluster-01 --nodes=1 spot
 
 ========
 ECR Login
@@ -108,6 +109,13 @@ argocd cluster add $CLUSTER_ARN \
   --aws-cluster-name $CLUSTER_ARN \
   --name in-cluster \
   --project default
+
+=====
+Argocd Image updater
+=====
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
+
+
 
 =======
 Secert
