@@ -95,7 +95,7 @@ export ARGOCD_SERVER=$(aws eks describe-capability \
   --output text \
   --region ap-southeast-1 | sed 's|^https://||')
 
-export ARGOCD_SERVER="9392436a23a94993563ffbef98015f231ccfd61b75227d490.eks-capabilities.ap-southeast-1.amazonaws.com"
+export ARGOCD_SERVER="1ce37fa79bd5267b1e47d5af21af4a4ae4cff62f2558d3ee0.eks-capabilities.ap-southeast-1.amazonaws.com"
 
 export ARGOCD_AUTH_TOKEN="your-token-here"
 
@@ -124,7 +124,8 @@ helm install external-secrets \
 
 eksctl create iamserviceaccount   --cluster=eks-cluster-01   --namespace=prod  --name=aws-secret-controller   --role-name AmazonEKSSecretRole-prod   --attach-policy-arn=arn:aws:iam::aws:policy/AWSSecretsManagerClientReadOnlyAccess   --approve
 
- kubectl annotate externalsecret my-app-external-secret force-sync=$(date +%s) --overwrite
+`Manually trigger a secret refresh`
+kubectl annotate externalsecret my-app-external-secret force-sync=$(date +%s) --overwrite
 
 
 ======
@@ -138,3 +139,12 @@ kubernetes.io/cluster/<name> tag set to either shared or owned
 kubernetes.io/role/internal-elb tag set to 1 for private subnets
 
 kubernetes.io/role/elb tag set to 1 for public subnets# gitops_repo
+
+
+====
+VPA 
+====
+git clone https://github.com/kubernetes/autoscaler.git
+cd autoscaler/vertical-pod-autoscaler/
+./hack/vpa-up.sh
+

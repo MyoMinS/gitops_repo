@@ -7,9 +7,9 @@ spec:
   project: dev
 
   source:
-    repoURL: https://github.com/MyoMinS/argo-labs-example.git
+    repoURL: https://github.com/MyoMinS/gitops_repo.git
     targetRevision: main
-    path: dev
+    path: mainfests/overlays/dev
 
   destination:
     name: in-cluster

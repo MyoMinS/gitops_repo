@@ -8,7 +8,7 @@ replicas:
   name: vote
 namespace: staging
 
-nameSuffix: -staging
+#nameSuffix: -staging
 
 labels:
 - includeSelectors: false
@@ -17,3 +17,7 @@ labels:
 #patches:
 #- path: service.yaml
 
+images:
+- name: 484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote:prod
+  newName: 484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote
+  newTag: dev
