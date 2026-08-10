@@ -6,7 +6,7 @@ resources:
 replicas:
 - count: 3
   name: vote
-namespace: staging
+namespace: dev
 
 #nameSuffix: -staging
 
