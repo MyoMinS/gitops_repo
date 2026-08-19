@@ -1,0 +1,7 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vote
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=true
+

@@ -16,6 +16,7 @@ labels:
 - includeSelectors: false
   pairs:
     project: instavote
-#patches:
-#- path: service.yaml
+
+patches:
+ - path: ingress.yaml
 

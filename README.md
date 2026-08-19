@@ -15,6 +15,13 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller   -n 
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller   -n kube-system   --set clusterName=eks-cluster-01   --set serviceAccount.create=false   --set replicaCount=1   --set serviceAccount.name=aws-load-balancer-controller --set vpcId=vpc-0832ec3aea47024b2
 
 
+
+`Annotation`
+
+alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=true
+
+kubectl patch ingress vote -n prod -p '{"metadata":{"finalizers":null}}' --type=merge
+
 ==========
 Cluster
 ========
@@ -39,7 +46,12 @@ aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS
 docker build -t 484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote:prod .
 docker push 484907514740.dkr.ecr.ap-southeast-1.amazonaws.com/vote:prod
 
+====
+ESK cluster autoscalar 
+====
 
+helm repo add autoscaler https://kubernetes.github.io/autoscaler
+helm install cluster-autoscaler autoscaler/cluster-autoscaler --namespace kube-system --set autoDiscovery.clusterName=eks-cluster-01 --set awsRegion=ap-southeast-1
 
 ========
 EKS Node
@@ -52,6 +64,8 @@ eksctl delete nodegroup --cluster=eks-cluster-01 --name=spot
 eksctl delete nodegroup --cluster=eks-cluster-01 --name=spot --disable-eviction
 
 eksctl drain nodegroup --cluster=eks-cluster-01 --name=spot
+
+eksctl upgrade nodegroup -f ./eks-cluster/cluster.yaml --name=ng-1-workers
 
 ======
 Add on
