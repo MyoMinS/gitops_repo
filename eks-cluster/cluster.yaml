@@ -6,6 +6,10 @@ metadata:
   region: ap-southeast-1
   version: "1.36"
 
+iam:
+  withOIDC: true
+  serviceRoleARN: arn:aws:iam::484907514740:role/EKSClusterServiceRole
+
 vpc:
   id: "vpc-0832ec3aea47024b2"
   subnets:
@@ -56,7 +60,12 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/eks-cluster-01: "owned"
     updateConfig:
       maxUnavailable: 1
-      
+
+addons:
+  - name: vpc-cni
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy 
+
   #- name: spot
   #  instanceTypes: ["c3.large","c4.large","c5.large","c5d.large","c5n.large","c5a.large"]
   #  spot: true
@@ -76,28 +85,24 @@ managedNodeGroups:
   #  updateConfig:
   #    maxUnavailable: 1
 
-iam:
-  withOIDC: true
-  serviceRoleARN: arn:aws:iam::484907514740:role/EKSClusterServiceRole
-
 
 #cloudWatch:
 #  clusterLogging:
 #    enableTypes: ["audit", "authenticator"]
 #    logRetentionInDays: 7
 
-#capabilities:
-#  - name: eks-cluster-01-argocd
-#    type: ARGOCD
-#    roleArn: arn:aws:iam::484907514740:role/AmazonEKSCapabilityArgoCDRole
-#    deletePropagationPolicy: RETAIN
-#    configuration:
-#      argocd:
-#        awsIdc:
-#          idcInstanceArn: arn:aws:sso:::instance/ssoins-8210833e57d6211f
-#          idcRegion: ap-southeast-1
-#        rbacRoleMappings:
-#          - role: ADMIN
-#            identities:
-#              - id: c91af59c-c021-7059-df21-47e6bb9daf2c
-#                type: SSO_USER
+capabilities:
+  - name: eks-cluster-01-argocd
+    type: ARGOCD
+    roleArn: arn:aws:iam::484907514740:role/AmazonEKSCapabilityArgoCDRole
+    deletePropagationPolicy: RETAIN
+    configuration:
+      argocd:
+        awsIdc:
+          idcInstanceArn: arn:aws:sso:::instance/ssoins-8210833e57d6211f
+          idcRegion: ap-southeast-1
+        rbacRoleMappings:
+          - role: ADMIN
+            identities:
+              - id: c91af59c-c021-7059-df21-47e6bb9daf2c
+                type: SSO_USER

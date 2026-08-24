@@ -31,7 +31,7 @@ eksctl utils associate-iam-oidc-provider --region=ap-southeast-1 --cluster=eks-c
 aws eks update-kubeconfig --name eks-cluster-01 --region ap-southeast-1
 
 eksctl create cluster -f .\cluster.yaml 
-eksctl delete cluster -f .\cluster.yaml 
+l 
 
 eksctl upgrade cluster --config-file cluster.yaml 
 
@@ -65,7 +65,7 @@ eksctl delete nodegroup --cluster=eks-cluster-01 --name=spot --disable-eviction
 
 eksctl drain nodegroup --cluster=eks-cluster-01 --name=spot
 
-eksctl upgrade nodegroup -f ./eks-cluster/cluster.yaml --name=ng-1-workers
+eksctl upgrade nodegroup --cluster=eks-cluster-01 --name=ng-1-workers
 
 ======
 Add on
@@ -110,7 +110,7 @@ export ARGOCD_SERVER=$(aws eks describe-capability \
   --output text \
   --region ap-southeast-1 | sed 's|^https://||')
 
-export ARGOCD_SERVER="1ce37fa79bd5267b1e47d5af21af4a4ae4cff62f2558d3ee0.eks-capabilities.ap-southeast-1.amazonaws.com"
+export ARGOCD_SERVER=""
 
 export ARGOCD_AUTH_TOKEN="your-token-here"
 

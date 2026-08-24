@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod
+  namespace: argocd
+spec:
+  description: Applications for Prod
+  sourceNamespaces:
+    - '*'
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: 'prod'
+    name: in-cluster
+    
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'

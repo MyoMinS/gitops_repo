@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: team-a
+  namespace: argocd
+spec:
+  description: Applications for Team A
+
+  # Source repositories this project can deploy from
+  sourceRepos:
+    - 'https://github.com/my-org/team-a-*'
+    - 'https://github.com/my-org/shared-libs'
+
+
+  # Source namespaces (required for EKS capability)
+  sourceNamespaces:
+    - argocd
+    - team-a-dev
+    - team-a-prod
+
+  # Destination clusters and namespaces
+  destinations:
+    - name: in-cluster
+      namespace: staging
+    - name: prod-cluster
+      namespace: team-a-prod
+
+  # Allowed resource types
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    - group: 'apps'
+      kind: Deployment
+    - group: ''
+      kind: Service
+    - group: ''
+      kind: ConfigMap
