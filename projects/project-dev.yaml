@@ -5,11 +5,17 @@ metadata:
   namespace: argocd
 spec:
   description: Applications for Dev
+  sourceNamespaces:
+    - '*'
   sourceRepos:
   - '*'
   destinations:
   - namespace: 'dev'
-    name: 'in-cluster'
+    name: in-cluster
+    
   clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  namespaceResourceWhitelist:
   - group: '*'
     kind: '*'

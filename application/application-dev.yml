@@ -4,7 +4,7 @@ metadata:
   name: vote-dev
   namespace: argocd
 spec:
-  project: default
+  project: dev
 
   source:
     repoURL: https://github.com/MyoMinS/gitops_repo.git
