@@ -30,8 +30,9 @@ eksctl utils associate-iam-oidc-provider --region=ap-southeast-1 --cluster=eks-c
 
 aws eks update-kubeconfig --name eks-cluster-01 --region ap-southeast-1
 
-eksctl create cluster -f .\cluster.yaml 
-l 
+eksctl create cluster -f .\eks-cluster\cluster.yaml
+
+eksctl delete cluster -f .\cluster.yaml 
 
 eksctl upgrade cluster --config-file cluster.yaml 
 
@@ -110,9 +111,9 @@ export ARGOCD_SERVER=$(aws eks describe-capability \
   --output text \
   --region ap-southeast-1 | sed 's|^https://||')
 
-export ARGOCD_SERVER=""
+export ARGOCD_SERVER=" "
 
-export ARGOCD_AUTH_TOKEN="your-token-here"
+export ARGOCD_AUTH_TOKEN=" "
 
 export ARGOCD_OPTS="--grpc-web"
 
@@ -121,8 +122,8 @@ CLUSTER_ARN=$(aws eks describe-cluster --name eks-cluster-01 --query 'cluster.ar
 
 argocd cluster add $CLUSTER_ARN \
   --aws-cluster-name $CLUSTER_ARN \
-  --name in-cluster \
-  --project default
+  --name in-cluster 
+#  --project default
 
 =====
 Argocd Image updater
@@ -144,7 +145,7 @@ helm install external-secrets \
   --create-namespace \
   --set installCRDs=true
 
-eksctl create iamserviceaccount   --cluster=eks-cluster-01   --namespace=prod  --name=aws-secret-controller   --role-name AmazonEKSSecretRole-prod   --attach-policy-arn=arn:aws:iam::aws:policy/AWSSecretsManagerClientReadOnlyAccess   --approve
+eksctl create iamserviceaccount   --cluster=eks-cluster-01   --namespace=kube-system  --name=aws-secret-controller   --role-name AmazonEKSSecretRole  --attach-policy-arn=arn:aws:iam::aws:policy/AWSSecretsManagerClientReadOnlyAccess   --approve
 
 `Manually trigger a secret refresh`
 kubectl annotate externalsecret my-app-external-secret force-sync=$(date +%s) --overwrite

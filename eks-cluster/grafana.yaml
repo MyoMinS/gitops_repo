@@ -1,0 +1,15 @@
+apiVersion: v1 
+kind: Secret 
+metadata: 
+  name: grafana-cloud 
+  namespace: monitoring 
+stringData: 
+  prometheus-host: <prometheus host> 
+  prometheus-username: <prometheus username> 
+  prometheus-password: <prometheus password> 
+  loki-host: <loki host> 
+  loki-username: <loki username> 
+  loki-password: <loki password> 
+  tempo-host: <tempo host> 
+  tempo-username: <tempo username> 
+  tempo-password: <tempo password> 
