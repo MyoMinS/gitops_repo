@@ -40,7 +40,8 @@ autoModeConfig:
 managedNodeGroups:
   - name: ng-1-workers
     labels: { role: workers }
-    instanceType: t3.medium
+    instanceTypes: ["t3.medium", "t3.large", "t3.xlarge"]
+    #instanceType: t3.medium
     desiredCapacity: 1
     minSize: 1
     maxSize: 4

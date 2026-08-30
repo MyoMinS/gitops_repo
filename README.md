@@ -32,7 +32,7 @@ aws eks update-kubeconfig --name eks-cluster-01 --region ap-southeast-1
 
 eksctl create cluster -f .\eks-cluster\cluster.yaml
 
-eksctl delete cluster -f .\cluster.yaml 
+eksctl delete cluster -f .\eks-cluster\cluster.yaml
 
 eksctl upgrade cluster --config-file cluster.yaml 
 
@@ -130,7 +130,7 @@ Argocd Image updater
 =====
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
 
-
+need ecr:listImage permission not default in node role
 
 =======
 Secert
@@ -171,3 +171,13 @@ git clone https://github.com/kubernetes/autoscaler.git
 cd autoscaler/vertical-pod-autoscaler/
 ./hack/vpa-up.sh
 
+
+
+====
+Grafana & Prometheus
+===
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prometheus prometheus-community/kube-prometheus-stack  --namespace monitoring --create-namespace
